@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0755b8">
+<title>Agenda Estudiantil | U.E. José Clemente Maurer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="splash">
+  <img class="logo" src="Logo.jpeg" alt="Logo Agenda Estudiantil" onerror="this.style.display='none'">
+  <div class="splash-title">Agenda Estudiantil</div>
+  <div class="splash-subtitle">U.E. José Clemente Maurer</div>
+</div>
+
+<div class="app">
+<section id="registerScreen">
+  <div class="card register-card">
+    <h1>Crear cuenta ✨</h1>
+    <p class="subtitle">Organiza tus actividades y mantén todo en un solo lugar.</p>
+    <form id="registerForm">
+      <div class="form-grid">
+        <div class="form-group full"><label for="nombre">Nombre completo</label><input id="nombre" type="text" placeholder="Escribe tu nombre completo" autocomplete="name" required></div>
+        <div class="form-group"><label for="usuario">Usuario</label><input id="usuario" type="text" placeholder="Ej. maria123" autocomplete="username" required></div>
+        <div class="form-group"><label for="correo">Correo electrónico</label><input id="correo" type="email" placeholder="correo@ejemplo.com" autocomplete="email" required></div>
+        <div class="form-group"><label for="curso">Curso</label><select id="curso" required><option value="">Seleccionar curso</option><option>1ro</option><option>2do</option><option>3ro</option><option>4to</option><option>5to</option><option>6to</option></select></div>
+        <div class="form-group"><label for="paralelo">Paralelo</label><select id="paralelo" required><option value="">Seleccionar paralelo</option><option>A</option><option>B</option><option>C</option></select></div>
+        <div class="form-group full"><label for="password">Contraseña</label><input id="password" type="password" minlength="6" placeholder="Crea una contraseña (mínimo 6 caracteres)" autocomplete="new-password" required></div>
+      </div>
+      <button class="main-btn" type="submit">Crear cuenta</button>
+      <div class="switch-text">¿Ya tienes una cuenta? <button type="button" class="link-btn" onclick="mostrarLogin()">Iniciar sesión</button></div>
+    </form>
+    <div class="quote">“Organiza tu tiempo, alcanza tus metas.” 🌟</div>
+  </div>
+</section>
+
+<section id="loginScreen" class="hidden">
+  <div class="card register-card">
+    <h1>Iniciar sesión 👋</h1><p class="subtitle">Ingresa a tu cuenta de Agenda Estudiantil.</p>
+    <form id="loginForm">
+      <div class="form-group"><label for="loginUsuario">Usuario</label><input id="loginUsuario" type="text" placeholder="Escribe tu usuario" autocomplete="username" required></div>
+      <div class="form-group"><label for="loginPassword">Contraseña</label><input id="loginPassword" type="password" placeholder="Escribe tu contraseña" autocomplete="current-password" required></div>
+      <button class="main-btn" type="submit">Iniciar sesión</button>
+    </form>
+    <div class="switch-text">¿No tienes una cuenta? <button type="button" class="link-btn" onclick="mostrarRegistro()">Crear cuenta</button></div>
+  </div>
+</section>
+
+<section id="adminScreen" class="hidden">
+  <div class="topbar"><div class="brand"><img class="small-logo" src="Logo.jpeg" alt="Logo" onerror="this.style.display='none'"><div><strong>Agenda Estudiantil</strong><div class="brand-subtitle">U.E. José Clemente Maurer</div></div></div><button class="logout" onclick="cerrarSesion()">Cerrar sesión</button></div>
+  <div class="welcome"><h1>Hola, <span id="adminName"></span> 👋</h1><p>Panel de administrador</p><span class="course-badge">🛠️ Administrador autorizado</span></div>
+  <div class="card">
+    <div class="admin-header"><div><h2>Actividades escolares</h2><p class="muted">Selecciona curso, paralelo y materia para publicar una actividad.</p></div><button class="add-btn" onclick="abrirModal()">＋ Agregar</button></div>
+    <div class="form-grid admin-filters">
+      <div class="form-group"><label for="adminFilterCurso">Ver curso</label><select id="adminFilterCurso"><option value="todos">Todos los cursos</option><option>1ro</option><option>2do</option><option>3ro</option><option>4to</option><option>5to</option><option>6to</option></select></div>
+      <div class="form-group"><label for="adminFilterParalelo">Ver paralelo</label><select id="adminFilterParalelo"><option value="todos">Todos los paralelos</option><option>A</option><option>B</option><option>C</option></select></div>
+    </div>
+    <div id="adminTasks" class="task-list"></div>
+  </div>
+  <div class="card notice-card"><h2>🔔 Registros recientes</h2><p class="muted">En esta versión de prueba se muestran los registros guardados en este mismo navegador.</p><div id="adminRegistrations" class="registration-list"></div></div>
+  <div class="quote">“Cada tarea publicada ayuda a organizar mejor el curso.” 💙</div>
+</section>
+
+<section id="studentScreen" class="hidden">
+  <div class="topbar"><div class="brand"><img class="small-logo" src="Logo.jpeg" alt="Logo" onerror="this.style.display='none'"><div><strong>Agenda Estudiantil</strong><div class="brand-subtitle">U.E. José Clemente Maurer</div></div></div><button class="logout" onclick="cerrarSesion()">Cerrar sesión</button></div>
+  <div class="welcome"><h1>Hola, <span id="studentName"></span> 👋</h1><p>Estas son las actividades de tu curso.</p><span class="course-badge">📚 <span id="studentCourse"></span></span></div>
+  <div class="stats"><div class="stat"><div id="totalTasks" class="stat-number">0</div><div class="stat-label">Actividades</div></div><div class="stat"><div id="pendingTasks" class="stat-number">0</div><div class="stat-label">Pendientes</div></div><div class="stat"><div id="doneTasks" class="stat-number">0</div><div class="stat-label">Completadas</div></div></div>
+  <div class="card"><h2>📚 Materias de mi curso</h2><p class="muted">Toca una materia para ver sus tareas. El signo ❓ indica que hay actividades pendientes.</p><div id="studentSubjects" class="subject-grid"></div><div id="subjectTasks" class="subject-tasks hidden"><button class="back-btn" onclick="mostrarMaterias()">← Todas las materias</button><h2 id="selectedSubjectTitle"></h2><div id="studentTasks" class="task-list"></div></div></div>
+  <div class="quote">“No tienes que hacerlo todo de una vez. Solo empieza.” 🌟</div>
+</section>
+</div>
+
+<div id="taskModal" class="modal hidden">
+  <div class="card modal-content"><h2>Agregar actividad 📝</h2><p class="subtitle">La actividad aparecerá solamente al curso y paralelo seleccionados.</p>
+    <form id="taskForm">
+      <div class="form-group"><label for="taskTitle">Nombre de la actividad</label><input id="taskTitle" type="text" placeholder="Ej. Resolver ejercicios" required></div>
+      <div class="form-group"><label for="taskSubject">Materia</label><select id="taskSubject" required></select></div>
+      <div class="form-group"><label for="taskDescription">Descripción</label><textarea id="taskDescription" placeholder="Escribe los detalles de la actividad"></textarea></div>
+      <div class="form-grid">
+        <div class="form-group"><label for="taskType">Tipo</label><select id="taskType" required><option value="Tarea">📝 Tarea</option><option value="Examen">📚 Examen</option><option value="Actividad">📌 Actividad</option><option value="Otro">📎 Otro</option></select></div>
+        <div class="form-group"><label for="taskDate">Fecha de entrega</label><input id="taskDate" type="date" required></div>
+        <div class="form-group"><label for="taskCourse">Curso destinatario</label><select id="taskCourse" required><option>1ro</option><option>2do</option><option>3ro</option><option>4to</option><option>5to</option><option>6to</option></select></div>
+        <div class="form-group"><label for="taskParallel">Paralelo destinatario</label><select id="taskParallel" required><option>A</option><option>B</option><option>C</option></select></div>
+      </div>
+      <div class="modal-buttons"><button type="button" class="cancel-btn" onclick="cerrarModal()">Cancelar</button><button type="submit" class="save-btn">Guardar</button></div>
+    </form>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
